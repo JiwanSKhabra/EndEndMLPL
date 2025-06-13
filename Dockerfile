@@ -1,5 +1,5 @@
 # Use Python 3.9 as the base image
-FROM python:3.12
+FROM python:3.12-slim
 
 # Set working directory in the container
 WORKDIR /app
@@ -10,12 +10,11 @@ COPY requirements.txt .
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-
 # Copy the API code
-COPY api/ ./main.py/
+COPY api/ ./api/
 
 # Copy model directory (for when you have a model)
-COPY model/ ./airbnb_model.pt/
+COPY model/ ./model/
 
 # Expose the port the app will run on
 EXPOSE 8000
