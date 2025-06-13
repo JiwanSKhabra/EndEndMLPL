@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Airbnb Price Prediction</title>
+</head>
+<body>
+    <h2>Enter Airbnb Listing Details</h2>
+    <form action="/predict_form" method="post">
+        <label>Latitude:</label><input type="number" step="any" name="latitude"><br>
+        <label>Longitude:</label><input type="number" step="any" name="longitude"><br>
+        <label>Minimum Nights:</label><input type="number" step="any" name="minimum_nights"><br>
+        <label>Number of Reviews:</label><input type="number" step="any" name="number_of_reviews"><br>
+        <label>Reviews per Month:</label><input type="number" step="any" name="reviews_per_month"><br>
+        <label>Availability (365):</label><input type="number" step="any" name="availability_365"><br>
+        <label>Neighbourhood Encoded:</label><input type="number" step="any" name="neighbourhood_encoded"><br>
+        <label>Is Available (0 or 1):</label><input type="number" name="is_available" min="0" max="1"><br>
+
+        <label>Room Type:</label>
+        <select name="room_type">
+            <option>Entire home/apt</option>
+            <option>Private room</option>
+            <option>Shared room</option>
+        </select><br>
+
+        <label>Neighbourhood Group:</label>
+        <select name="neighbourhood_group">
+            <option>Bronx</option>
+            <option>Brooklyn</option>
+            <option>Manhattan</option>
+            <option>Queens</option>
+            <option>Staten Island</option>
+        </select><br>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if predicted_price is defined %}
+        <h3>Predicted Price: ${{ predicted_price }}</h3>
+    {% endif %}
+</body>
+</html>

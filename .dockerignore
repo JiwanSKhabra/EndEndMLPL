@@ -1,0 +1,11 @@
+# Ignore virtual environment
+.venv/
+
+# ignore all certain types of files inside data folder
+data/*.csv
+data/*.py
+data/*.ipynb
+
+# ignore python cache files
+__pycache__/
+*.pyc
