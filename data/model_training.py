@@ -79,4 +79,4 @@ for epoch in range(epochs):
 
 torch.save(model.state_dict(), "airbnb_model.pt")
 
-print("✅ Model and input scaler saved.")
+print("Model and input scaler saved.")

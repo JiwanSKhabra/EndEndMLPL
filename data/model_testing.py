@@ -41,18 +41,14 @@ sample_input = [
     551, # encoding
 ]
 
-print('hello')
 # Convert to 2D array and scale
 sample_input = np.array(sample_input).reshape(1, -1)
 sample_input_scaled = input_scaler.transform(sample_input)
 added_input = [1, 1, 0, 0, 0, 1, 0, 0, 0]
 added_input = np.array(added_input).reshape(1, -1)
-
-print('why')
 final_tesor = np.concatenate((sample_input_scaled, added_input), axis=1)
-print('plz')
 
-print(final_tesor)
+
 
 
 # Convert to tensor
