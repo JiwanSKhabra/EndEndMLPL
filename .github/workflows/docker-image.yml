@@ -2,8 +2,7 @@ name: CI/CD Pipeline to Azure
 
 on:
   push:
-    branches:
-      - main   # Triggers the CI/CD pipeline on code pushes to the 'main' branch
+    branches: [ "master" ] # Triggers the CI/CD pipeline on code pushes to the 'main' branch
 
 jobs:
   build-and-deploy:
