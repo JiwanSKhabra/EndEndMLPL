@@ -1,25 +1,47 @@
-name: Build and Test Airbnb API Container
-
+name: Build and Deploy to Azure
 on:
   push:
-    branches: [ modeling ]
+    branches: [ "master" ] # Triggers the CI/CD pipeline on code pushes to the 'master' branch
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    # Step 1: Checkout the code from the GitHub repo
+    - name: Checkout Code
       uses: actions/checkout@v3
 
-    - name: Set up Docker CLI
-      uses: docker/setup-buildx-action@v2
+    # Step 2: Log in to Azure CLI
+    - name: Log in to Azure CLI
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Build Docker image
-      run: docker build -t airbnb-api:1.0 .
+    # Step 3: Log in to Azure Container Registry
+    - name: Log in to Azure Container Registry
+      uses: azure/docker-login@v1
+      with:
+        login-server: airbnbtest.azurecr.io
+        username: ${{ secrets.AZURE_ACR_USERNAME }}
+        password: ${{ secrets.AZURE_ACR_PASSWORD }}
 
-    - name: Run container and test FastAPI
+    # Step 4: Build and Push Docker Image
+    - name: Build and Push Docker Image
       run: |
-        docker run -d -p 8000:8000 --name airbnb-app airbnb-api:1.0
-        sleep 5
-        curl --fail http://localhost:8000/docs || (echo "❌ API did not respond" && exit 1)
+        docker build --no-cache -t airbnbtest.azurecr.io/myapp:2.0 .
+        docker push airbnbtest.azurecr.io/myapp:2.0
+
+    # Step 5: Deploy to Azure Web App using Publish Profile
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: airbnbtest
+        slot-name: production
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        images: 'airbnbtest.azurecr.io/myapp:2.0'
+
+    # Step 6: Restart Azure Web App
+    - name: Restart Azure Web App
+      run: |
+        az webapp restart --name airbnbtest --resource-group containertest
