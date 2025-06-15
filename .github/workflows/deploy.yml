@@ -22,26 +22,26 @@ jobs:
     - name: Log in to Azure Container Registry
       uses: azure/docker-login@v1
       with:
-        login-server: airbnbtest.azurecr.io
+        login-server: airbnbintial.azurecr.io
         username: ${{ secrets.AZURE_ACR_USERNAME }}
         password: ${{ secrets.AZURE_ACR_PASSWORD }}
 
     # Step 4: Build and Push Docker Image
     - name: Build and Push Docker Image
       run: |
-        docker build --no-cache -t airbnbtest.azurecr.io/myapp:2.0 .
-        docker push airbnbtest.azurecr.io/myapp:2.0
+        docker build --no-cache -t airbnbintial.azurecr.io/airbnb-api:1.0 .
+        docker push airbnbintial.azurecr.io/airbnb-api:1.0
 
     # Step 5: Deploy to Azure Web App using Publish Profile
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: airbnbtest
+        app-name: airbnbprediction
         slot-name: production
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        images: 'airbnbtest.azurecr.io/myapp:2.0'
+        images: 'airbnbintial.azurecr.io/airbnb-api:1.0'
 
     # Step 6: Restart Azure Web App
     - name: Restart Azure Web App
       run: |
-        az webapp restart --name airbnbtest --resource-group containertest
+        az webapp restart --name airbnbprediction --resource-group endendml_group
