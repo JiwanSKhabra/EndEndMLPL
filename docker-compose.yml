@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  airbnb-app:
+    image: airbnb-api:1.0
+    container_name: airbnb-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/app/api
+      - ./model:/app/model
+      - ./data:/app/data
+    restart: unless-stopped

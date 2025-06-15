@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airbnb-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: airbnb-api
+  template:
+    metadata:
+      labels:
+        app: airbnb-api
+    spec:
+      containers:
+      - name: airbnb-api
+        image: airbnbregistry25345.azurecr.io/airbnb-api:1.0
+        ports:
+        - containerPort: 8000

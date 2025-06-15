@@ -1,0 +1,25 @@
+name: Build and Test Airbnb API Container
+
+on:
+  push:
+    branches: [ modeling ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Docker CLI
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build Docker image
+      run: docker build -t airbnb-api:1.0 .
+
+    - name: Run container and test FastAPI
+      run: |
+        docker run -d -p 8000:8000 --name airbnb-app airbnb-api:1.0
+        sleep 5
+        curl --fail http://localhost:8000/docs || (echo "❌ API did not respond" && exit 1)
